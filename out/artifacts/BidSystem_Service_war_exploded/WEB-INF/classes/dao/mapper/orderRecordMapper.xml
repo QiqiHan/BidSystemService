@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dao.orderRecordMapper" >
+  <resultMap id="BaseResultMap" type="DO.orderRecord" >
+    <constructor >
+      <idArg column="recordId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="userId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="landlordId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="price" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="createdAt" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="facilities" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="roomType" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="hotelType" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="aroundSite" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="startTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="leaveTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="roomNum" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="orderId" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="point" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    recordId, userId, landlordId, price, createdAt, facilities, roomType, hotelType, 
+    aroundSite, startTime, leaveTime, roomNum, orderId, point
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from orderrecord
+    where recordId = #{recordid,jdbcType=INTEGER}
+  </select>
+
+  <select id="getallorder" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from orderrecord
+    where userId = #{userid,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from orderrecord
+    where recordId = #{recordid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="DO.orderRecord" >
+    insert into orderrecord (recordId, userId, landlordId, 
+      price, createdAt, facilities, 
+      roomType, hotelType, aroundSite, 
+      startTime, leaveTime, roomNum, 
+      orderId, point)
+    values (#{recordid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{landlordid,jdbcType=INTEGER}, 
+      #{price,jdbcType=INTEGER}, #{createdat,jdbcType=TIMESTAMP}, #{facilities,jdbcType=VARCHAR}, 
+      #{roomtype,jdbcType=VARCHAR}, #{hoteltype,jdbcType=VARCHAR}, #{aroundsite,jdbcType=VARCHAR}, 
+      #{starttime,jdbcType=TIMESTAMP}, #{leavetime,jdbcType=TIMESTAMP}, #{roomnum,jdbcType=INTEGER}, 
+      #{orderid,jdbcType=VARCHAR}, #{point,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="DO.orderRecord" >
+    insert into orderrecord
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="recordid != null" >
+        recordId,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="landlordid != null" >
+        landlordId,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="createdat != null" >
+        createdAt,
+      </if>
+      <if test="facilities != null" >
+        facilities,
+      </if>
+      <if test="roomtype != null" >
+        roomType,
+      </if>
+      <if test="hoteltype != null" >
+        hotelType,
+      </if>
+      <if test="aroundsite != null" >
+        aroundSite,
+      </if>
+      <if test="starttime != null" >
+        startTime,
+      </if>
+      <if test="leavetime != null" >
+        leaveTime,
+      </if>
+      <if test="roomnum != null" >
+        roomNum,
+      </if>
+      <if test="orderid != null" >
+        orderId,
+      </if>
+      <if test="point != null" >
+        point,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="recordid != null" >
+        #{recordid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="landlordid != null" >
+        #{landlordid,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=INTEGER},
+      </if>
+      <if test="createdat != null" >
+        #{createdat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="facilities != null" >
+        #{facilities,jdbcType=VARCHAR},
+      </if>
+      <if test="roomtype != null" >
+        #{roomtype,jdbcType=VARCHAR},
+      </if>
+      <if test="hoteltype != null" >
+        #{hoteltype,jdbcType=VARCHAR},
+      </if>
+      <if test="aroundsite != null" >
+        #{aroundsite,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null" >
+        #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="leavetime != null" >
+        #{leavetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roomnum != null" >
+        #{roomnum,jdbcType=INTEGER},
+      </if>
+      <if test="orderid != null" >
+        #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="point != null" >
+        #{point,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="DO.orderRecord" >
+    update orderrecord
+    <set >
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="landlordid != null" >
+        landlordId = #{landlordid,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=INTEGER},
+      </if>
+      <if test="createdat != null" >
+        createdAt = #{createdat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="facilities != null" >
+        facilities = #{facilities,jdbcType=VARCHAR},
+      </if>
+      <if test="roomtype != null" >
+        roomType = #{roomtype,jdbcType=VARCHAR},
+      </if>
+      <if test="hoteltype != null" >
+        hotelType = #{hoteltype,jdbcType=VARCHAR},
+      </if>
+      <if test="aroundsite != null" >
+        aroundSite = #{aroundsite,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null" >
+        startTime = #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="leavetime != null" >
+        leaveTime = #{leavetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roomnum != null" >
+        roomNum = #{roomnum,jdbcType=INTEGER},
+      </if>
+      <if test="orderid != null" >
+        orderId = #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="point != null" >
+        point = #{point,jdbcType=INTEGER},
+      </if>
+    </set>
+    where recordId = #{recordid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="DO.orderRecord" >
+    update orderrecord
+    set userId = #{userid,jdbcType=INTEGER},
+      landlordId = #{landlordid,jdbcType=INTEGER},
+      price = #{price,jdbcType=INTEGER},
+      createdAt = #{createdat,jdbcType=TIMESTAMP},
+      facilities = #{facilities,jdbcType=VARCHAR},
+      roomType = #{roomtype,jdbcType=VARCHAR},
+      hotelType = #{hoteltype,jdbcType=VARCHAR},
+      aroundSite = #{aroundsite,jdbcType=VARCHAR},
+      startTime = #{starttime,jdbcType=TIMESTAMP},
+      leaveTime = #{leavetime,jdbcType=TIMESTAMP},
+      roomNum = #{roomnum,jdbcType=INTEGER},
+      orderId = #{orderid,jdbcType=VARCHAR},
+      point = #{point,jdbcType=INTEGER}
+    where recordId = #{recordid,jdbcType=INTEGER}
+  </update>
+
+</mapper>

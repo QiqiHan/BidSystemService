@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dao.tenantMapper" >
+  <resultMap id="BaseResultMap" type="DO.tenant" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="password" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="gender" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="phoneNum" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="preference" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="education" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="vocation" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="economic" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, password, gender, phoneNum, preference, education, vocation, economic
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tenant
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tenant
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="DO.tenant" >
+    insert into tenant (id, name, password, 
+      gender, phoneNum, preference, 
+      education, vocation, economic
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{gender,jdbcType=CHAR}, #{phonenum,jdbcType=CHAR}, #{preference,jdbcType=VARCHAR}, 
+      #{education,jdbcType=VARCHAR}, #{vocation,jdbcType=VARCHAR}, #{economic,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="DO.tenant" >
+    insert into tenant
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="phonenum != null" >
+        phoneNum,
+      </if>
+      <if test="preference != null" >
+        preference,
+      </if>
+      <if test="education != null" >
+        education,
+      </if>
+      <if test="vocation != null" >
+        vocation,
+      </if>
+      <if test="economic != null" >
+        economic,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=CHAR},
+      </if>
+      <if test="phonenum != null" >
+        #{phonenum,jdbcType=CHAR},
+      </if>
+      <if test="preference != null" >
+        #{preference,jdbcType=VARCHAR},
+      </if>
+      <if test="education != null" >
+        #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="vocation != null" >
+        #{vocation,jdbcType=VARCHAR},
+      </if>
+      <if test="economic != null" >
+        #{economic,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="DO.tenant" >
+    update tenant
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=CHAR},
+      </if>
+      <if test="phonenum != null" >
+        phoneNum = #{phonenum,jdbcType=CHAR},
+      </if>
+      <if test="preference != null" >
+        preference = #{preference,jdbcType=VARCHAR},
+      </if>
+      <if test="education != null" >
+        education = #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="vocation != null" >
+        vocation = #{vocation,jdbcType=VARCHAR},
+      </if>
+      <if test="economic != null" >
+        economic = #{economic,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="DO.tenant" >
+    update tenant
+    set name = #{name,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=CHAR},
+      phoneNum = #{phonenum,jdbcType=CHAR},
+      preference = #{preference,jdbcType=VARCHAR},
+      education = #{education,jdbcType=VARCHAR},
+      vocation = #{vocation,jdbcType=VARCHAR},
+      economic = #{economic,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
