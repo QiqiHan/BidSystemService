@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+<environments default="BidSystem">
+    <environment id="BidSystem">
+        <transactionManager type="JDBC"/>
+        <dataSource type="POOLED">
+            <property name="driver" value="com.mysql.jdbc.Driver"/>
+            <property name="url" value="jdbc:mysql://127.0.0.1:3306/bidsystem" />
+            <property name="username" value="root"/>
+            <property name="password" value=""/>
+        </dataSource>
+    </environment>
+</environments>
+
+<mappers>
+    <mapper resource="dao/mapper/bidMapper.xml"/>
+    <mapper resource="dao/mapper/landlordMapper.xml"/>
+    <mapper resource="dao/mapper/orderRecordMapper.xml"/>
+    <mapper resource="dao/mapper/roomMapper.xml"/>
+    <mapper resource="dao/mapper/tenantMapper.xml"/>
+    <mapper resource="dao/mapper/tenderMapper.xml"/>
+    <mapper resource="dao/mapper/userMapper.xml"/>
+</mappers>
+</configuration>

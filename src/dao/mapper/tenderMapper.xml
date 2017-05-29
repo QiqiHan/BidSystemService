@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dao.tenderMapper" >
+  <resultMap id="BaseResultMap" type="DO.tender" >
+    <constructor >
+      <idArg column="tenderId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="orderId" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="userId" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="price" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="address" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="startTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="leaveTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="roomType" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="roomNum" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="createdAt" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="facilities" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="hotelType" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="aroundSite" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    tenderId, orderId, userId, price, address, startTime, leaveTime, roomType, roomNum, 
+    createdAt, facilities, hotelType, aroundSite
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tender
+    where tenderId = #{tenderid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tender
+    where tenderId = #{tenderid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="DO.tender" >
+    insert into tender (tenderId, orderId, userId, 
+      price, address, startTime, 
+      leaveTime, roomType, roomNum, 
+      createdAt, facilities, hotelType, 
+      aroundSite)
+    values (#{tenderid,jdbcType=INTEGER}, #{orderid,jdbcType=VARCHAR}, #{userid,jdbcType=INTEGER}, 
+      #{price,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, #{starttime,jdbcType=TIMESTAMP}, 
+      #{leavetime,jdbcType=TIMESTAMP}, #{roomtype,jdbcType=VARCHAR}, #{roomnum,jdbcType=INTEGER}, 
+      #{createdat,jdbcType=TIMESTAMP}, #{facilities,jdbcType=VARCHAR}, #{hoteltype,jdbcType=VARCHAR}, 
+      #{aroundsite,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="DO.tender" >
+    insert into tender
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tenderid != null" >
+        tenderId,
+      </if>
+      <if test="orderid != null" >
+        orderId,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="starttime != null" >
+        startTime,
+      </if>
+      <if test="leavetime != null" >
+        leaveTime,
+      </if>
+      <if test="roomtype != null" >
+        roomType,
+      </if>
+      <if test="roomnum != null" >
+        roomNum,
+      </if>
+      <if test="createdat != null" >
+        createdAt,
+      </if>
+      <if test="facilities != null" >
+        facilities,
+      </if>
+      <if test="hoteltype != null" >
+        hotelType,
+      </if>
+      <if test="aroundsite != null" >
+        aroundSite,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tenderid != null" >
+        #{tenderid,jdbcType=INTEGER},
+      </if>
+      <if test="orderid != null" >
+        #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null" >
+        #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="leavetime != null" >
+        #{leavetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roomtype != null" >
+        #{roomtype,jdbcType=VARCHAR},
+      </if>
+      <if test="roomnum != null" >
+        #{roomnum,jdbcType=INTEGER},
+      </if>
+      <if test="createdat != null" >
+        #{createdat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="facilities != null" >
+        #{facilities,jdbcType=VARCHAR},
+      </if>
+      <if test="hoteltype != null" >
+        #{hoteltype,jdbcType=VARCHAR},
+      </if>
+      <if test="aroundsite != null" >
+        #{aroundsite,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="DO.tender" >
+    update tender
+    <set >
+      <if test="orderid != null" >
+        orderId = #{orderid,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null" >
+        startTime = #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="leavetime != null" >
+        leaveTime = #{leavetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roomtype != null" >
+        roomType = #{roomtype,jdbcType=VARCHAR},
+      </if>
+      <if test="roomnum != null" >
+        roomNum = #{roomnum,jdbcType=INTEGER},
+      </if>
+      <if test="createdat != null" >
+        createdAt = #{createdat,jdbcType=TIMESTAMP},
+      </if>
+      <if test="facilities != null" >
+        facilities = #{facilities,jdbcType=VARCHAR},
+      </if>
+      <if test="hoteltype != null" >
+        hotelType = #{hoteltype,jdbcType=VARCHAR},
+      </if>
+      <if test="aroundsite != null" >
+        aroundSite = #{aroundsite,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where tenderId = #{tenderid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="DO.tender" >
+    update tender
+    set orderId = #{orderid,jdbcType=VARCHAR},
+      userId = #{userid,jdbcType=INTEGER},
+      price = #{price,jdbcType=INTEGER},
+      address = #{address,jdbcType=VARCHAR},
+      startTime = #{starttime,jdbcType=TIMESTAMP},
+      leaveTime = #{leavetime,jdbcType=TIMESTAMP},
+      roomType = #{roomtype,jdbcType=VARCHAR},
+      roomNum = #{roomnum,jdbcType=INTEGER},
+      createdAt = #{createdat,jdbcType=TIMESTAMP},
+      facilities = #{facilities,jdbcType=VARCHAR},
+      hotelType = #{hoteltype,jdbcType=VARCHAR},
+      aroundSite = #{aroundsite,jdbcType=VARCHAR}
+    where tenderId = #{tenderid,jdbcType=INTEGER}
+  </update>
+</mapper>
