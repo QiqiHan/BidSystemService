@@ -1,5 +1,6 @@
 package multiAgent.agentHelper;
 
+import DO.bid;
 import DO.orderRecord;
 import DO.tenant;
 import multiAgent.agent.tenantAgent;
@@ -42,6 +43,7 @@ public class ValueCal {
     private static int init_maxPrice = 0;
     private static int init_minPrice = 0;
     private static int init_avePrice = 0;
+    private static int goodLevel = 11;
 
     public ValueCal(){
         this.fill_hashmap();
@@ -68,21 +70,7 @@ public class ValueCal {
     public List ScreenBids(List bids, tenant user, Order order,boolean InNegotiation){
         List resultBids = new ArrayList();
 
-        //calculate the average/max/min Price
-//        int averagePrice = 0;
-//        int sumPrice = 0;
-//        int maxPrice = ((Bid)bids.get(0)).getPrice();
-//        int minPrice = ((Bid)bids.get(0)).getPrice();
-//        for(int i=0;i<bids.size();i++){
-//            int tempPrice = ((Bid)bids.get(i)).getPrice();
-//            sumPrice+= tempPrice;
-//            if(tempPrice>maxPrice){
-//                maxPrice = tempPrice;
-//            }else if(tempPrice<minPrice){
-//                minPrice = tempPrice;
-//            }
-//        }
-//        averagePrice = sumPrice/(bids.size());
+        int goodBidScore = 0;
 
         //deal with the detail scores
         CalPoints calPoints = null;
@@ -95,12 +83,12 @@ public class ValueCal {
                 int facilityScore = calPoints.calFacility(tempbid.getFacilities(),order.getFacilities());
                 int siteScore = calPoints.calsite(tempbid.getAroundsites());
                 int sum = priceScore+roomScore+facilityScore+siteScore;
-                System.out.print("Bid id is"+tempbid.getId()+" and it's score :"+sum);
-                if(sum<7){
+                System.out.println("Bid id is"+tempbid.getLandlordId().getName() +" and it's score :"+sum);
+                if(sum<6){
                     reject.add(tempbid);
-                }else if(sum>=13){
+                }else if(sum>=goodLevel){
+                    goodBidScore+=sum;
                     GoodBid.add(tempbid);
-                    resultBids.add(tempbid);
                 }else{
                     resultBids.add(tempbid);
                 }
@@ -114,12 +102,12 @@ public class ValueCal {
                 int facilityScore = calPoints.calFacility(tempbid.getFacilities(),order.getFacilities());
                 int siteScore = calPoints.calsite(tempbid.getAroundsites());
                 int sum = priceScore+roomScore+facilityScore+siteScore;
-                System.out.print("Bid id is"+tempbid.getId()+" and it's score :"+sum);
-                if(sum<7){
+                System.out.println("Bid id is"+tempbid.getLandlordId().getName() +" and it's score :"+sum);
+                if(sum<6){
                     reject.add(tempbid);
-                }else if(sum>=13){
+                }else if(sum>=goodLevel){
+                    goodBidScore+=sum;
                     GoodBid.add(tempbid);
-                    resultBids.add(tempbid);
                 }else{
                     resultBids.add(tempbid);
                 }
@@ -128,19 +116,28 @@ public class ValueCal {
         }
 
         if(!InNegotiation){
-            if(GoodBid.size()==1){
+            if(GoodBid.size()==1){          //只有唯一的好的Bid
                 return null;
-            }else if(resultBids.size() == 0){
-                return null;
-            }else{
-                GoodBid.clear();
+            }else if(GoodBid.size()>1){     //有多个好的Bid
+                goodLevel = goodBidScore/(GoodBid.size());
                 return resultBids;
+            }else if(GoodBid.size()==0){        //没有好的Bid
+                if(resultBids.size()==0){       //全部拒绝
+                    return null;
+                }else{
+                    goodLevel=11;
+                    return resultBids;
+                }
             }
         }else{
-            return resultBids;
+            if(resultBids.size()!=0){
+                return resultBids;
+            }else{
+                return null;
+            }
         }
 
-
+        return null;
     }
 
     public List getReject() {
@@ -152,34 +149,6 @@ public class ValueCal {
     }
 
 
-    private List chooseResult_bid(int sum,boolean inNegotiation,Bid tempBid){
-        List resultBids = new ArrayList();
-        int goodLevel = 12;
-
-        if(!inNegotiation){
-            if(sum<6){
-                reject.add(tempBid);
-            }else if(sum>=goodLevel){
-                GoodBid.add(tempBid);
-            }else{
-                resultBids.add(tempBid);
-            }
-
-            if(GoodBid.size()==1){
-                return null;
-            }else if(GoodBid.size()>1){
-                int all = 0;
-                for(int i=0;i<GoodBid.size();i++){
-
-                }
-            }
-
-        }
-
-        return resultBids;
-    }
-
-
     //fill the hashmap
     private void fill_hashmap(){
         roomPoint.put(RoomType.Standard,1);
@@ -188,6 +157,9 @@ public class ValueCal {
         roomPoint.put(RoomType.Business,4);
         roomPoint.put(RoomType.Deluxe,5);
     }
-    
+
+    private void saveBid(int tenantid,String name,int result){
+        bid saveobject = new bid();
+    }
 
 }

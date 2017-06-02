@@ -20,7 +20,7 @@ public class managerServiceImpl implements managerService {
     public void initSystem() {
         Runtime rt = Runtime.instance();
         rt.setCloseVM(true);
-        Profile pMain = new ProfileImpl("127.0.0.1",1100,null);
+        Profile pMain = new ProfileImpl("127.0.0.1",1099,null);
         AgentContainer container = rt.createMainContainer(pMain);
         agentHandler.containers.put("main",container);
         System.out.println("系统初始化");

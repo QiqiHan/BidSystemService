@@ -125,7 +125,7 @@ public class landlordDealTender extends OneShotBehaviour{
         if(type == 1) {
             //决定竞价
             bid = new Bid(order.getId(),
-                    new Room(1,1, RoomType.Business+"",agent.getAID(),r.getPrice(),r.getValidstarttime(),r.getValidendtime(),r.getPrice()+"",2),
+                    new Room(r.getRoomid(),agent.getOwner().getLandlordid(), RoomType.Business+"",agent.getAID(),r.getPrice(),r.getValidstarttime(),r.getValidendtime(),r.getPrice()+"",2),
                     r.getPrice(),
                     facilitys,
                     null,

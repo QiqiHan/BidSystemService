@@ -32,7 +32,7 @@ public class tenantAgent extends Agent {
     //tenantAgent 生命周期
     private boolean isDone = false;
     private Map<Integer,Order> tenantTOorder;
-    private LinkedBlockingQueue<Bid> queues;
+    private LinkedBlockingQueue<List<Bid>> queues;
 
     protected void setup() {
         getContentManager().registerLanguage(codec);
@@ -43,7 +43,7 @@ public class tenantAgent extends Agent {
         if (args.length > 0) {
             CondVar latch = (CondVar) args[0];
             owner = (tenant) args[1];
-            queues = (LinkedBlockingQueue<Bid>)args[2];
+            queues = (LinkedBlockingQueue<List<Bid>>)args[2];
             latch.signal();
         }
         System.out.println("创建 tenantAgent");
@@ -56,9 +56,8 @@ public class tenantAgent extends Agent {
 
 //    public boolean done(){
 //        //结束生命周期
-//        return true;
+//        return isDone;
 //    }
-
     public tenant getOwner(){
         return owner;
     }
@@ -68,7 +67,7 @@ public class tenantAgent extends Agent {
         System.out.println("tenantAgent 被销毁");
         setEnabledO2ACommunication(false,0);
     }
-    public void putResult(Bid bid){
+    public void putResult(List<Bid> bid){
         try {
             this.queues.put(bid);
         } catch (InterruptedException e) {
