@@ -65,6 +65,9 @@ public class negotiation  extends OneShotBehaviour {
                 myAgent.getContentManager().fillContent(message, sendAct);
                 //发消息
                 myAgent.send(message);
+                if(!((tenantAgent) myAgent).hasNegotiation()){
+                    ((tenantAgent) myAgent).takeDown();
+                }
             }
         }catch (Codec.CodecException e){
             e.printStackTrace();

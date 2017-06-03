@@ -3,3 +3,11 @@ target/
 APDescription.txt
 BidSystem.iml
 MTPs-Main-Container.txt
+web/WEB-INF/lib/smile-core-1.3.1.jar
+*.jar
+*.class
+*.xml
+*.properties
+resource/config.xml
+*.MF
+resource/config.xml

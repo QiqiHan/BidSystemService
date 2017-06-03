@@ -63,6 +63,9 @@ public class tenantAgent extends Agent {
     }
     public void setOrder(Integer id,Order order){ tenantTOorder.put(id,order);}
     public Order getOrder(Integer id){return tenantTOorder.get(id);}
+    public boolean hasNegotiation() {
+        return !tenantTOorder.isEmpty();
+    }
     public void takeDown(){
         System.out.println("tenantAgent 被销毁");
         setEnabledO2ACommunication(false,0);
