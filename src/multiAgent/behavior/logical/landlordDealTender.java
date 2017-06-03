@@ -2,6 +2,7 @@ package multiAgent.behavior.logical;
 
 import DO.landlord;
 import DO.room;
+import dao.bidMapper;
 import dao.daoImpl.landlordDao;
 import dao.daoImpl.roomDao;
 import jade.core.AID;
@@ -12,6 +13,8 @@ import jade.util.leap.List;
 import multiAgent.agent.landlordAgent;
 import multiAgent.behavior.message.landlordPropose;
 import multiAgent.ontology.*;
+import org.apache.ibatis.session.SqlSession;
+import util.DBTools;
 import util.DateUtil;
 
 import java.util.Date;
@@ -143,6 +146,18 @@ public class landlordDealTender extends OneShotBehaviour{
                     order.getSource(),
                     type);
         }
+        DO.bid b = new DO.bid(Integer.parseInt(bid.getId()),
+                Integer.parseInt(order.getCustomer()),
+                agent.getName(),
+                type,
+                bid.getPrice(),
+                bid.getRoom().getRoomId(),
+                order.getId(),
+                1);
+        SqlSession sqlSession = DBTools.getSession();
+        bidMapper bidMapper = sqlSession.getMapper(dao.bidMapper.class);
+        bidMapper.insert(b);
+
         myAgent.addBehaviour(new landlordPropose(myAgent,bid,receive));
     }
 
