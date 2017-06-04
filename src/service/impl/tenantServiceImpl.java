@@ -85,9 +85,9 @@ public class tenantServiceImpl implements tenantService {
         OrderInfo orderInfo = o;
         tenant user = tenantDao.getTenant(orderInfo.getUserId());
         jade.util.leap.List facilities = new  jade.util.leap.ArrayList();
-        List<String> facilitys = o.getFacilities();
-        for(int i = 0 ; i < facilitys.size() ; i++){
-            facilities.add(i,facilitys.get(i));
+        List<String> facilies = o.getFacilities();
+        for(int i = 0 ; i < facilies.size() ; i++){
+            facilities.add(i,facilies.get(i));
         }
         Order order = new Order(o.getUserId()+"",
                 user.getName(),
