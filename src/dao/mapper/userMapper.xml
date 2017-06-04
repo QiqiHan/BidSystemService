@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="DO.user" >
     <constructor >
       <idArg column="userId" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="username" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="password" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="sex" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="job" jdbcType="VARCHAR" javaType="java.lang.String" />
@@ -12,32 +12,32 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    userId, username, password, sex, job, age
+    userId, name, password, sex, job, age
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from user
-    where userId = #{userid,jdbcType=INTEGER}
+    where userId = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from user
-    where userId = #{userid,jdbcType=INTEGER}
+    where userId = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="DO.user" >
-    insert into user (userId, username, password, 
+    insert into user (userId, name, password,
       sex, job, age)
-    values (#{userid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
       #{sex,jdbcType=VARCHAR}, #{job,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="DO.user" >
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="userid != null" >
+      <if test="id != null" >
         userId,
       </if>
-      <if test="username != null" >
-        username,
+      <if test="name != null" >
+        name,
       </if>
       <if test="password != null" >
         password,
@@ -53,11 +53,11 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="userid != null" >
-        #{userid,jdbcType=INTEGER},
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
       </if>
-      <if test="username != null" >
-        #{username,jdbcType=VARCHAR},
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
       </if>
       <if test="password != null" >
         #{password,jdbcType=VARCHAR},
@@ -76,8 +76,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="DO.user" >
     update user
     <set >
-      <if test="username != null" >
-        username = #{username,jdbcType=VARCHAR},
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="password != null" >
         password = #{password,jdbcType=VARCHAR},
@@ -92,15 +92,15 @@
         age = #{age,jdbcType=INTEGER},
       </if>
     </set>
-    where userId = #{userid,jdbcType=INTEGER}
+    where userId = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="DO.user" >
     update user
-    set username = #{username,jdbcType=VARCHAR},
+    set name = #{name,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=VARCHAR},
       job = #{job,jdbcType=VARCHAR},
       age = #{age,jdbcType=INTEGER}
-    where userId = #{userid,jdbcType=INTEGER}
+    where userId = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

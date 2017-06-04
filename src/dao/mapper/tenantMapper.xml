@@ -23,6 +23,13 @@
     from tenant
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectByNameAndPassword" resultMap="BaseResultMap" resultType="DO.tenant">
+      select
+      <include refid="Base_Column_List" />
+      from tenant
+      where name = #{tenantname,jdbcType=VARCHAR}
+      and password = #{password,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from tenant
     where id = #{id,jdbcType=INTEGER}

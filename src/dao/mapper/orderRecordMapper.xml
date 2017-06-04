@@ -34,7 +34,7 @@
     select
     <include refid="Base_Column_List" />
     from orderrecord
-    where userId = #{userid,jdbcType=INTEGER}
+    where userId = #{id,jdbcType=INTEGER}
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
@@ -47,7 +47,7 @@
       roomType, hotelType, aroundSite, 
       startTime, leaveTime, roomNum, 
       orderId, point)
-    values (#{recordid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{landlordid,jdbcType=INTEGER}, 
+    values (#{recordid,jdbcType=INTEGER}, #{id,jdbcType=INTEGER}, #{landlordid,jdbcType=INTEGER},
       #{price,jdbcType=INTEGER}, #{createdat,jdbcType=TIMESTAMP}, #{facilities,jdbcType=VARCHAR}, 
       #{roomtype,jdbcType=VARCHAR}, #{hoteltype,jdbcType=VARCHAR}, #{aroundsite,jdbcType=VARCHAR}, 
       #{starttime,jdbcType=TIMESTAMP}, #{leavetime,jdbcType=TIMESTAMP}, #{roomnum,jdbcType=INTEGER}, 
@@ -59,7 +59,7 @@
       <if test="recordid != null" >
         recordId,
       </if>
-      <if test="userid != null" >
+      <if test="id != null" >
         userId,
       </if>
       <if test="landlordid != null" >
@@ -103,8 +103,8 @@
       <if test="recordid != null" >
         #{recordid,jdbcType=INTEGER},
       </if>
-      <if test="userid != null" >
-        #{userid,jdbcType=INTEGER},
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
       </if>
       <if test="landlordid != null" >
         #{landlordid,jdbcType=INTEGER},
@@ -147,8 +147,8 @@
   <update id="updateByPrimaryKeySelective" parameterType="DO.orderRecord" >
     update orderrecord
     <set >
-      <if test="userid != null" >
-        userId = #{userid,jdbcType=INTEGER},
+      <if test="id != null" >
+        userId = #{id,jdbcType=INTEGER},
       </if>
       <if test="landlordid != null" >
         landlordId = #{landlordid,jdbcType=INTEGER},
@@ -191,7 +191,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="DO.orderRecord" >
     update orderrecord
-    set userId = #{userid,jdbcType=INTEGER},
+    set userId = #{id,jdbcType=INTEGER},
       landlordId = #{landlordid,jdbcType=INTEGER},
       price = #{price,jdbcType=INTEGER},
       createdAt = #{createdat,jdbcType=TIMESTAMP},

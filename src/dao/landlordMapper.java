@@ -1,6 +1,7 @@
 package dao;
 
 import DO.landlord;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -14,6 +15,8 @@ public interface landlordMapper {
     landlord selectByPrimaryKey(Integer landlordid);
 
     List<landlord> selectAllLandlord();
+
+    landlord selectByNameAndPassword(@Param("landlordname") String landlordname, @Param("password") String password);
 
     int updateByPrimaryKeySelective(landlord record);
 
