@@ -11,6 +11,8 @@ public interface tenantMapper {
 
     tenant selectByPrimaryKey(Integer id);
 
+    tenant selectByNameAndPassword(String tenantname, String password);
+
     int updateByPrimaryKeySelective(tenant record);
 
     int updateByPrimaryKey(tenant record);

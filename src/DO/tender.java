@@ -2,7 +2,7 @@ package DO;
 
 import java.util.Date;
 
-public class tender {
+public class tender{
     private Integer tenderid;
 
     private String orderid;

@@ -2,7 +2,7 @@ package DO;
 
 import java.math.BigDecimal;
 
-public class landlord {
+public class landlord extends user{
     private Integer landlordid;
 
     private String landlordname;

@@ -1,45 +1,37 @@
 package DO;
 
 public class user {
-    private Integer userid;
+    private Integer id;
 
-    private String username;
+    private String name;
 
     private String password;
 
-    private String sex;
 
-    private String job;
-
-    private Integer age;
-
-    public user(Integer userid, String username, String password, String sex, String job, Integer age) {
-        this.userid = userid;
-        this.username = username;
+    public user(Integer userid, String username, String password) {
+        this.id = userid;
+        this.name = username;
         this.password = password;
-        this.sex = sex;
-        this.job = job;
-        this.age = age;
     }
 
     public user() {
         super();
     }
 
-    public Integer getUserid() {
-        return userid;
+    public Integer getId() {
+        return id;
     }
 
-    public void setUserid(Integer userid) {
-        this.userid = userid;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username == null ? null : username.trim();
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 
     public String getPassword() {
@@ -50,27 +42,5 @@ public class user {
         this.password = password == null ? null : password.trim();
     }
 
-    public String getSex() {
-        return sex;
-    }
 
-    public void setSex(String sex) {
-        this.sex = sex == null ? null : sex.trim();
-    }
-
-    public String getJob() {
-        return job;
-    }
-
-    public void setJob(String job) {
-        this.job = job == null ? null : job.trim();
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
 }

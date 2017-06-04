@@ -35,6 +35,13 @@
     from landlord
     where landlordId = #{landlordid,jdbcType=INTEGER}
   </select>
+  <select id="selectByNameAndPassword" resultMap="BaseResultMap" resultType="DO.landlord" >
+    select
+    <include refid="Base_Column_List" />
+    from landlord
+    where landlordName = #{landlordname,jdbcType=VARCHAR}
+    and password = #{password,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from landlord
     where landlordId = #{landlordid,jdbcType=INTEGER}

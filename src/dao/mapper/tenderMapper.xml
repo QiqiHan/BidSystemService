@@ -38,7 +38,7 @@
       leaveTime, roomType, roomNum, 
       createdAt, facilities, hotelType, 
       aroundSite)
-    values (#{tenderid,jdbcType=INTEGER}, #{orderid,jdbcType=VARCHAR}, #{userid,jdbcType=INTEGER}, 
+    values (#{tenderid,jdbcType=INTEGER}, #{orderid,jdbcType=VARCHAR}, #{id,jdbcType=INTEGER},
       #{price,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, #{starttime,jdbcType=TIMESTAMP}, 
       #{leavetime,jdbcType=TIMESTAMP}, #{roomtype,jdbcType=VARCHAR}, #{roomnum,jdbcType=INTEGER}, 
       #{createdat,jdbcType=TIMESTAMP}, #{facilities,jdbcType=VARCHAR}, #{hoteltype,jdbcType=VARCHAR}, 
@@ -53,7 +53,7 @@
       <if test="orderid != null" >
         orderId,
       </if>
-      <if test="userid != null" >
+      <if test="id != null" >
         userId,
       </if>
       <if test="price != null" >
@@ -94,8 +94,8 @@
       <if test="orderid != null" >
         #{orderid,jdbcType=VARCHAR},
       </if>
-      <if test="userid != null" >
-        #{userid,jdbcType=INTEGER},
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
       </if>
       <if test="price != null" >
         #{price,jdbcType=INTEGER},
@@ -135,8 +135,8 @@
       <if test="orderid != null" >
         orderId = #{orderid,jdbcType=VARCHAR},
       </if>
-      <if test="userid != null" >
-        userId = #{userid,jdbcType=INTEGER},
+      <if test="id != null" >
+        userId = #{id,jdbcType=INTEGER},
       </if>
       <if test="price != null" >
         price = #{price,jdbcType=INTEGER},
@@ -174,7 +174,7 @@
   <update id="updateByPrimaryKey" parameterType="DO.tender" >
     update tender
     set orderId = #{orderid,jdbcType=VARCHAR},
-      userId = #{userid,jdbcType=INTEGER},
+      userId = #{id,jdbcType=INTEGER},
       price = #{price,jdbcType=INTEGER},
       address = #{address,jdbcType=VARCHAR},
       startTime = #{starttime,jdbcType=TIMESTAMP},

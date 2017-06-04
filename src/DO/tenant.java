@@ -1,6 +1,6 @@
 package DO;
 
-public class tenant {
+public class tenant extends user{
     private Integer id;
 
     private String name;
