@@ -72,19 +72,6 @@ public class selectAnalysis extends OneShotBehaviour {
 
         myAgent.addBehaviour(new selectPropose(myAgent,tender,aids));
 
-//        Iterator<landlordCompare> landlordCompares = queue.iterator();
-//        //应该是如果应标 再查周边信息
-//        while(landlordCompares.hasNext()) {
-//            landlordCompare landcompare = landlordCompares.next();
-//            LandlordInfo land = landcompare.getLand();
-//            //寻找酒店周边信息
-//            List<String> keywords = new ArrayList<String>();
-//            keywords.add("超市");
-//            keywords.add("公交");
-//            keywords.add("景点");
-//            Map<String,List<MapObject>> maps = MapUtil.searchAroundSite(keywords,land.getLat().toString(),land.getLongitude().toString());
-//        }
-
 
     }
 

@@ -44,17 +44,17 @@ public class TenantApi {
                 dEnd);
         tenantService.createAgent(order.getUserId());
         //目前bid还没返回
-        OrderInfo orderInfo = new OrderInfo(order.getUserId(),
-                                            order.getAddress(),
-                                            order.getHotelType(),
-                                            order.getRoomType(),
-                                            order.getRoomNum(),
-                                            order.getMinPrice(),
-                                            order.getMaxPrice(),
-                                            order.getFacilities(),
-                                            order.getStartTime(),
-                                            order.getEndTime());
-        List<BidInfo> bids = tenantService.Order("",orderInfo);
+//        OrderInfo orderInfo = new OrderInfo(order.getUserId(),
+//                                            order.getAddress(),
+//                                            order.getHotelType(),
+//                                            order.getRoomType(),
+//                                            order.getRoomNum(),
+//                                            order.getMinPrice(),
+//                                            order.getMaxPrice(),
+//                                            order.getFacilities(),
+//                                            order.getStartTime(),
+//                                            order.getEndTime());
+        List<BidInfo> bids = tenantService.Order(order);
 //        String result = JSONObject.toJSONString(bid);
         return JSONObject.toJSONString(bids);
     }

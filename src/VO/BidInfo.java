@@ -14,7 +14,9 @@ public class BidInfo {
     String roomPrice;
     int num;
     List<String> facilitys;
-    public BidInfo(String hotelName, String hotelType, String roomType, String actualPrice, String roomPrice, int num, List<String> facilitys) {
+    List<Consult> consults;
+
+    public BidInfo(String hotelName, String hotelType, String roomType, String actualPrice, String roomPrice, int num, List<String> facilitys, List<Consult> consult) {
         this.hotelName = hotelName;
         this.hotelType = hotelType;
         this.roomType = roomType;
@@ -22,6 +24,7 @@ public class BidInfo {
         this.roomPrice = roomPrice;
         this.num = num;
         this.facilitys = facilitys;
+        this.consults = consult;
     }
     public BidInfo(){}
 
@@ -81,5 +84,25 @@ public class BidInfo {
         this.facilitys = facilitys;
     }
 
+    public List<Consult> getConsults() {
+        return consults;
+    }
 
+    public void setConsults(List<Consult> consults) {
+        this.consults = consults;
+    }
+
+    @Override
+    public String toString() {
+        return "BidInfo{" +
+                "hotelName='" + hotelName + '\'' +
+                ", hotelType='" + hotelType + '\'' +
+                ", roomType='" + roomType + '\'' +
+                ", actualPrice='" + actualPrice + '\'' +
+                ", roomPrice='" + roomPrice + '\'' +
+                ", num=" + num +
+                ", facilitys=" + facilitys +
+                ", consults=" + consults +
+                '}';
+    }
 }

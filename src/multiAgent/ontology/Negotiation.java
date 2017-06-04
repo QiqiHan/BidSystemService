@@ -14,7 +14,7 @@ public class Negotiation implements AgentAction {
 
     private int maxReduction;  //最大降价幅度
 
-    private int result;  //1表示同意，0表示拒绝，-1表示还未处理
+    private int result;  //1表示同意，0表示拒绝，-1表示还未处理  2表示结束协商过程
 
     private int actualPrice;
 

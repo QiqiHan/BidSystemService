@@ -12,7 +12,6 @@ import jade.util.leap.List;
  */
 public class Bid implements Concept {
 
-
     //市场价，是否再同意降价,床的大小，房间大小
     private String id; //就是orderId,现在暂时用的AID
     private Room room;
@@ -27,6 +26,7 @@ public class Bid implements Concept {
     public Bid(String id,
                Room room,
                int price,
+               int num,
                List facilities,
                List aroundsites,
                AID landlordId ,
@@ -36,6 +36,7 @@ public class Bid implements Concept {
         this.id = id;
         this.room = room;
         this.price = price;
+        this.num = num;
         this.facilities =facilities;
         this.aroundsites = aroundsites;
         this.landlordId = landlordId;

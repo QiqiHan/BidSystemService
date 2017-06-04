@@ -2,6 +2,8 @@ package multiAgent.agent;
 
 import DO.landlord;
 import DO.tenant;
+import VO.BidInfo;
+import VO.Consult;
 import jade.content.lang.Codec;
 import jade.content.lang.sl.SLCodec;
 import jade.content.onto.Ontology;
@@ -32,7 +34,8 @@ public class tenantAgent extends Agent {
     //tenantAgent 生命周期
     private boolean isDone = false;
     private Map<Integer,Order> tenantTOorder;
-    private LinkedBlockingQueue<List<Bid>> queues;
+    private LinkedBlockingQueue<List<BidInfo>> queues;
+    private Map<Integer,List<Consult>> landlordTOconsult;
 
     protected void setup() {
         getContentManager().registerLanguage(codec);
@@ -40,10 +43,11 @@ public class tenantAgent extends Agent {
         setEnabledO2ACommunication(true,10);
         Object[] args = getArguments();
         tenantTOorder = new HashMap<Integer, Order>();
+        landlordTOconsult = new HashMap<Integer, List<Consult>>();
         if (args.length > 0) {
             CondVar latch = (CondVar) args[0];
             owner = (tenant) args[1];
-            queues = (LinkedBlockingQueue<List<Bid>>)args[2];
+            queues = (LinkedBlockingQueue<List<BidInfo>>)args[2];
             latch.signal();
         }
         System.out.println("创建 tenantAgent");
@@ -63,19 +67,22 @@ public class tenantAgent extends Agent {
     }
     public void setOrder(Integer id,Order order){ tenantTOorder.put(id,order);}
     public Order getOrder(Integer id){return tenantTOorder.get(id);}
-    public boolean hasNegotiation() {
-        return !tenantTOorder.isEmpty();
-    }
     public void takeDown(){
         System.out.println("tenantAgent 被销毁");
         setEnabledO2ACommunication(false,0);
     }
-    public void putResult(List<Bid> bid){
+    public void putResult(List<BidInfo> bid){
         try {
             this.queues.put(bid);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+    public List<Consult> getConsult(int landlordId){
+        return landlordTOconsult.get(landlordId);
+    }
+    public void setConsult(int landlordId,List<Consult> consults){
+        this.landlordTOconsult.put(landlordId,consults);
     }
 
 }

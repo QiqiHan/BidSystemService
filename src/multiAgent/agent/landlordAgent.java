@@ -25,7 +25,6 @@ public class landlordAgent extends Agent{
     private Ontology ontology = BidOntology.getInstance();
     private landlord owner = null;
     //landlordAgent 生命周期
-    private boolean isDone = false;
     private Map<String,Order> orderToNegotiate;
 
     protected void setup() {
@@ -34,7 +33,7 @@ public class landlordAgent extends Agent{
         setEnabledO2ACommunication(true,10);
         //args[0]是landlord  args[1]是countDownBatch
         Object[] args = getArguments();
-        DFUtil.registerService(this,"LandlordInfo");
+        DFUtil.registerService(this,"landlord");
         addBehaviour(new landlordListener(this));
         if (args.length > 0) {
             owner = (landlord) args[0];
@@ -44,15 +43,9 @@ public class landlordAgent extends Agent{
             count.countDown();
         }
     }
-
-    protected boolean done(){
-        return isDone;
-    }
-    public boolean isDone() {
-        return isDone;
-    }
-    public void setDone(boolean done) {
-        isDone = done;
+    public void takeDown(){
+        System.out.println("landlordAgent "+owner.getLandlordname()+"  被销毁");
+        setEnabledO2ACommunication(false,0);
     }
 
     public landlord getOwner(){
@@ -63,10 +56,7 @@ public class landlordAgent extends Agent{
         return orderToNegotiate;
     }
 
-    public void takeDown(){
-        System.out.println("landlordAgent 被销毁");
-        setEnabledO2ACommunication(false,0);
-    }
+
 
 
 }

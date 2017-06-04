@@ -2,7 +2,7 @@ package DO;
 
 import java.util.Date;
 
-public class tender{
+public class tender {
     private Integer tenderid;
 
     private String orderid;
@@ -29,8 +29,7 @@ public class tender{
 
     private String aroundsite;
 
-    public tender(Integer tenderid, String orderid, Integer userid, Integer price, String address, Date starttime, Date leavetime, String roomtype, Integer roomnum, Date createdat, String facilities, String hoteltype, String aroundsite) {
-        this.tenderid = tenderid;
+    public tender( String orderid, Integer userid, Integer price, String address, Date starttime, Date leavetime, String roomtype, Integer roomnum, Date createdat, String facilities, String hoteltype) {
         this.orderid = orderid;
         this.userid = userid;
         this.price = price;
@@ -42,7 +41,6 @@ public class tender{
         this.createdat = createdat;
         this.facilities = facilities;
         this.hoteltype = hoteltype;
-        this.aroundsite = aroundsite;
     }
 
     public tender() {

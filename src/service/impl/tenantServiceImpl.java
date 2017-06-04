@@ -50,7 +50,7 @@ public class tenantServiceImpl implements tenantService {
         tenant user = this.findTenant(tenantId);
         String name = user.getName();
         AgentContainer container = agentHandler.containers.get("main");
-        Queue<Bid> bidQueue = new LinkedBlockingQueue<Bid>();
+        Queue<BidInfo> bidQueue = new LinkedBlockingQueue<BidInfo>();
         try {
             CondVar startUpLatch = new CondVar();
             AgentController tenantAgent = container.createNewAgent(name,"multiAgent.agent.tenantAgent",new Object[] { startUpLatch ,user ,bidQueue});
@@ -81,13 +81,15 @@ public class tenantServiceImpl implements tenantService {
         agentHandler.queues.remove(name);
     }
 
-    public List<BidInfo> Order(String name, OrderInfo o) {
+    public List<BidInfo> Order(OrderInfo o) {
         OrderInfo orderInfo = o;
         tenant user = tenantDao.getTenant(orderInfo.getUserId());
+        String name = user.getName();
+
         jade.util.leap.List facilities = new  jade.util.leap.ArrayList();
         List<String> facilies = o.getFacilities();
         for(int i = 0 ; i < facilies.size() ; i++){
-            facilities.add(i,facilies.get(i));
+            facilities.add(facilies.get(i));
         }
         Order order = new Order(o.getUserId()+"",
                 user.getName(),
@@ -103,28 +105,15 @@ public class tenantServiceImpl implements tenantService {
                 facilities,
                 new AID(user.getName(),false));
         AgentController tenantAgent = agentHandler.agents.get(name);
-        List<Bid> bids = new ArrayList<Bid>();
+        List<BidInfo> bids = new ArrayList<BidInfo>();
         try {
             tenantAgent.putO2AObject(order,false);
-            LinkedBlockingQueue<List<Bid>> queues = (LinkedBlockingQueue<List<Bid>>) agentHandler.queues.get(name);
+            LinkedBlockingQueue<List<BidInfo>> queues = (LinkedBlockingQueue<List<BidInfo>>) agentHandler.queues.get(name);
             bids = queues.take();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        List<BidInfo> resultBidInfo = new ArrayList<BidInfo>();
-        for(Bid bid:bids){
-            Room r = bid.getRoom();
-            landlord l =  landlordDao.findlandlordByid(r.getLandlordId());
-            List<String> facilitys = new ArrayList<String>();
-            for(int i = 0 ; i <bid.getFacilities().size() ; i++){
-                facilitys.add((String)bid.getFacilities().get(i));
-            }
-            BidInfo info = new BidInfo(l.getLandlordname(),l.getLandlordtype(),r.getType(),bid.getPrice()+"",r.getPrice()+"",bid.getNum(),facilitys);
-            resultBidInfo.add(info);
-        }
-
-        return resultBidInfo;
+        return bids;
     }
 
 

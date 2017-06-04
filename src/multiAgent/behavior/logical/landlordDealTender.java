@@ -2,9 +2,10 @@ package multiAgent.behavior.logical;
 
 import DO.landlord;
 import DO.room;
-import dao.bidMapper;
+import DO.tender;
 import dao.daoImpl.landlordDao;
 import dao.daoImpl.roomDao;
+import dao.daoImpl.tenderDao;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
@@ -13,11 +14,10 @@ import jade.util.leap.List;
 import multiAgent.agent.landlordAgent;
 import multiAgent.behavior.message.landlordPropose;
 import multiAgent.ontology.*;
-import org.apache.ibatis.session.SqlSession;
-import util.DBTools;
 import util.DateUtil;
 
 import java.util.Date;
+
 
 /**
  * Created by H77 on 2017/5/8.
@@ -25,7 +25,7 @@ import java.util.Date;
  */
 public class landlordDealTender extends OneShotBehaviour{
 
-    private Tender tender;
+    private Tender _tender;
     private AID receive;
     private landlordAgent agent;
 
@@ -33,7 +33,7 @@ public class landlordDealTender extends OneShotBehaviour{
     public landlordDealTender(Agent agent , Tender tender, AID receive){
         super(agent);
         this.agent = (landlordAgent) agent;
-        this.tender = tender;
+        this._tender = tender;
         this.receive = receive;
     }
     public void action() {
@@ -50,7 +50,7 @@ public class landlordDealTender extends OneShotBehaviour{
         int type; //如果type是1代表要竞标，如果是0表示不竞标
         landlord landlord = agent.getOwner();  //该agent代表的房东
         String characteristic = landlord.getCharacteristic();  //该房东的经济情况
-        Order order = tender.getOrder();
+        Order order = _tender.getOrder();
         int price_min_tender = order.getMinPrice();
         int price_max_tender = order.getMaxPrice();
         String roomType = order.getRoomType();
@@ -65,7 +65,7 @@ public class landlordDealTender extends OneShotBehaviour{
 
         agent.getOrderToNegotiate().put(order.getId(),order);
 
-//        LandlordInfo land = landlordDao.findlandlordByid(LandlordInfo.)
+//        landlord land = landlordDao.findlandlordByid(landlord.)
         if(r==null){
             //该房东没有该类型的房间,拒绝竞标
             type = 0;
@@ -84,16 +84,16 @@ public class landlordDealTender extends OneShotBehaviour{
                 //房间价格在招标价格区间内
                 int threshold = 0;
                 if(characteristic.equals("tension")){
-                    threshold = 0;
+                    threshold = 3;
                 }else if(characteristic.equals("affordable")){
-                    threshold = 10;
+                    threshold = 8;
                 }else if(characteristic.equals("amiable")){
-                    threshold = 20;
+                    threshold = 10;
                 }else if(characteristic.equals("promotion")){
-                    threshold = 40;
+                    threshold = 15;
                 }
-
-                if(price_room+threshold>price_max_tender){
+                //价格太高时，不会接受
+                if(price_room*( 1+threshold )>price_max_tender){
                     type = 0;
                 }else{
                     //价格符合了要求，判断订单的时间（是否是节假日）和空房率
@@ -124,12 +124,28 @@ public class landlordDealTender extends OneShotBehaviour{
             }
         }
 
+
+        //对于竞价结果需要持久化
+        tender tender = new tender(order.getId()+"",
+                agent.getOwner().getLandlordid(),
+                order.getMaxPrice(),
+                order.getAddress(),
+                order.getStartTime(),
+                order.getEndTime(),
+                order.getRoomType(),
+                order.getRoomNum(),
+                order.getCreateTime(),
+                order.getFacilities().toString(),
+                order.getHotelType());
+        tenderDao.saveTender(tender);
+
         Bid bid = null;
         if(type == 1) {
             //决定竞价
             bid = new Bid(order.getId(),
                     new Room(r.getRoomid(),agent.getOwner().getLandlordid(), RoomType.Business+"",agent.getAID(),r.getPrice(),r.getValidstarttime(),r.getValidendtime(),r.getPrice()+"",2),
                     r.getPrice(),
+                    order.getRoomNum(),
                     facilitys,
                     null,
                     myAgent.getAID(),
@@ -140,24 +156,13 @@ public class landlordDealTender extends OneShotBehaviour{
             bid = new Bid(order.getId(),
                     new Room(1,1, RoomType.Business+"",agent.getAID(),200,new Date(2017,5,2),new Date(2017,5,9),"200",2),
                     0,
+                    order.getRoomNum(),
                     null,
                     null,
                     myAgent.getAID(),
                     order.getSource(),
                     type);
         }
-        DO.bid b = new DO.bid(Integer.parseInt(bid.getId()),
-                Integer.parseInt(order.getCustomer()),
-                agent.getName(),
-                type,
-                bid.getPrice(),
-                bid.getRoom().getRoomId(),
-                order.getId(),
-                1);
-        SqlSession sqlSession = DBTools.getSession();
-        bidMapper bidMapper = sqlSession.getMapper(dao.bidMapper.class);
-        bidMapper.insert(b);
-
         myAgent.addBehaviour(new landlordPropose(myAgent,bid,receive));
     }
 

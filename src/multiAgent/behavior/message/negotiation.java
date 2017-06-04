@@ -1,6 +1,7 @@
 package multiAgent.behavior.message;
 
 import DO.tenant;
+import VO.Consult;
 import jade.content.lang.Codec;
 import jade.content.lang.sl.SLCodec;
 import jade.content.onto.Ontology;
@@ -15,6 +16,7 @@ import multiAgent.agent.tenantAgent;
 import multiAgent.ontology.Bid;
 import multiAgent.ontology.BidOntology;
 import multiAgent.ontology.Negotiation;
+import util.CondVar;
 
 
 /**
@@ -26,11 +28,16 @@ public class negotiation  extends OneShotBehaviour {
     private Codec codec = new SLCodec();
     private Ontology ontology = BidOntology.getInstance();
     private String Orderid = null;
+    private boolean End = false;
+    private tenantAgent agent;
 
-    public negotiation(Agent agent,List Bids,String orderid){
+
+    public negotiation(Agent agent,List Bids,String orderid,boolean end){
         super(agent);
         this.Bids = Bids;
         this.Orderid = orderid;
+        this.End = end;
+        this.agent = (tenantAgent)agent;
     }
 
     public void action() {
@@ -42,22 +49,30 @@ public class negotiation  extends OneShotBehaviour {
                 message.setLanguage(codec.getName());
                 message.setOntology(ontology.getName());
 
-                tenant t = ((tenantAgent)myAgent).getOwner();
-                String economic = t.getEconomic();
-                int minReduction = 0;
-                int maxReduction = 0;
-                if(economic.equals("poor")){
-                    minReduction = 20;
-                    maxReduction = 50;
-                }else if(economic.equals("normal")){
-                    minReduction = 10;
-                    maxReduction = 30;
-                }else if(economic.equals("rich")){
-                    minReduction = 0;
-                    maxReduction = 20;
-                }
+                int landlordid = bid.getRoom().getLandlordId();
+                java.util.List<Consult> consults = ((tenantAgent)myAgent).getConsult(landlordid);
+                Consult oneConsult = consults.get(consults.size()-1);
+//                tenant t = ((tenantAgent)myAgent).getOwner();
+//                String economic = t.getEconomic();
+                int minReduction = oneConsult.getMinReduction();
+                int maxReduction = oneConsult.getMaxReduction();
+//                if(economic.equals("poor")){
+//                    minReduction = 20;
+//                    maxReduction = 50;
+//                }else if(economic.equals("normal")){
+//                    minReduction = 10;
+//                    maxReduction = 30;
+//                }else if(economic.equals("rich")){
+//                    minReduction = 0;
+//                    maxReduction = 20;
+//                }
                 //组装Negotitation对象，这边其实需要计算大概还价多少
-                Negotiation negotiation = new Negotiation(Orderid,minReduction, maxReduction, -1,bid.getPrice());
+                Negotiation negotiation;
+                if(End){
+                    negotiation = new Negotiation(Orderid,minReduction, maxReduction, 2,bid.getPrice());
+                }else{
+                    negotiation = new Negotiation(Orderid,minReduction, maxReduction, -1,bid.getPrice());
+                }
                 Action sendAct = new Action();
                 sendAct.setActor(myAgent.getAID());
                 sendAct.setAction(negotiation);
@@ -65,8 +80,8 @@ public class negotiation  extends OneShotBehaviour {
                 myAgent.getContentManager().fillContent(message, sendAct);
                 //发消息
                 myAgent.send(message);
-                if(!((tenantAgent) myAgent).hasNegotiation()){
-                    ((tenantAgent) myAgent).doDelete();
+                if(End){
+                    agent.doDelete();   //clear the agent
                 }
             }
         }catch (Codec.CodecException e){
@@ -77,6 +92,7 @@ public class negotiation  extends OneShotBehaviour {
             e.printStackTrace();
         }
     }
+
 
 
 }

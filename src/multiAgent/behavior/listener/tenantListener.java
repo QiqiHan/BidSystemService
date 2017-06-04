@@ -1,6 +1,10 @@
 package multiAgent.behavior.listener;
 
+import DO.landlord;
 import DO.tenant;
+import VO.BidInfo;
+import VO.Consult;
+import dao.daoImpl.landlordDao;
 import jade.content.ContentElement;
 import jade.content.lang.Codec;
 import jade.content.lang.sl.SLCodec;
@@ -36,14 +40,15 @@ public class tenantListener extends CyclicBehaviour {
     private int lowerPriceNum = 0;
     private int currentResponse = 0;
     private List bids = new ArrayList();            //用于下次的negotiation
-    private List finalBids = new ArrayList();       //不在降价的bid
-    private Map<AID,Bid> mapped = new HashMap<AID,Bid>();
+    private List finalBids = new ArrayList();       //不再降价的bid
+    private List allbids = new ArrayList();         //用于存储全部的Bid信息
+    private Map<AID, Bid> mapped = new HashMap<AID, Bid>();
     private ValueCal cal = null;
     private tenantAgent agent;
 
-    public tenantListener(Agent agent, ValueCal c){
+    public tenantListener(Agent agent, ValueCal c) {
         super(agent);
-        this.agent = (tenantAgent)agent;
+        this.agent = (tenantAgent) agent;
         cal = c;
     }
 
@@ -52,117 +57,124 @@ public class tenantListener extends CyclicBehaviour {
                 MessageTemplate.MatchLanguage(codec.getName()),
                 MessageTemplate.MatchOntology(ontology.getName()));
         ACLMessage msg = myAgent.receive();
-        if(msg != null){
-            if(msg.getPerformative() == ACLMessage.INFORM){
+        if (msg != null) {
+            if (msg.getPerformative() == ACLMessage.INFORM) {
                 //得到返回的房东竞标集合，下一步是与房东之间的智能讨价还价过程
-                System.out.println(myAgent.getName() +" 收到筛选结果");
+                System.out.println(myAgent.getName() + " 收到筛选结果");
                 try {
                     ContentElement ce = myAgent.getContentManager().extractContent(msg);
                     Action act = (Action) ce;
-                    if(act.getAction() instanceof  OrderResponse){
-                        OrderResponse orderResponse = (OrderResponse)act.getAction();
+                    if (act.getAction() instanceof OrderResponse) {
+                        OrderResponse orderResponse = (OrderResponse) act.getAction();
                         //完成映射表
-                        if(orderResponse==null || orderResponse.getBids()==null){
+                        if (orderResponse == null || orderResponse.getBids() == null) {
                             System.out.println("没有符合意向的房源");
-                        }else {
+                        } else {
                             for (int i = 0; i < orderResponse.getBids().size(); i++) {
                                 Bid bid = (Bid) orderResponse.getBids().get(i);
                                 mapped.put(bid.getLandlordId(), bid);
                             }
+                            allbids = orderResponse.getBids();      //保存全部的Bid信息
                             //according to tenant preference to choose some bids
-                            tenant thistenant = ((tenantAgent)myAgent).getOwner();
-                            Order order = ((tenantAgent)myAgent).getOrder(thistenant.getId());
+                            tenant thistenant = ((tenantAgent) myAgent).getOwner();
+                            Order order = ((tenantAgent) myAgent).getOrder(thistenant.getId());
                             cal.initPrice(orderResponse.getBids());
-                            List response = cal.ScreenBids(orderResponse.getBids(),thistenant,order,false);
+                            List response = cal.ScreenBids(orderResponse.getBids(), thistenant, order, false, myAgent);
 //                            List response = cal.bidvalue(orderResponse.getBids());
-                            if(response == null){
-                                if(cal.getGoodBid().size()==1){         //just one good bid; and put the result in the LinkedBlockingQueue
+                            if (response == null) {
+                                if (cal.getGoodBid().size() == 1) {         //just one good bid; and put the result in the LinkedBlockingQueue
                                     //return the bid that is accepted
-                                    Bid bestBid = (Bid)cal.getGoodBid().get(0);
-                                    java.util.List<Bid> resBid = new java.util.ArrayList<Bid>();
-                                    resBid.add(bestBid);
-//                                    tenant t =  ((tenantAgent)myAgent).getOwner();
-                                    agent.putResult(resBid);
-                                    agent.doDelete();      //clear the agent
-                                }else{
+                                    java.util.List<BidInfo> resultBids = this.creatBidInfo(cal.getGoodBid());
+                                    agent.putResult(resultBids);
+                                    negotiation neg = new negotiation(myAgent,allbids,"",true);
+                                    myAgent.addBehaviour(neg);
+//                                    agent.doDelete();      //clear the agent
+                                } else {
                                     //reject all the bid
                                     System.out.println("reject all bids!!");
                                 }
-                            }else{
+                            } else {
                                 responseNum = response.size();
-                                myAgent.addBehaviour(new negotiation(myAgent,response,order.getId()));
+                                myAgent.addBehaviour(new negotiation(myAgent, response, order.getId(),false));
                             }
 //                            responseNum = orderResponse.getBids().size();
 //                            myAgent.addBehaviour(new negotiation(myAgent, orderResponse.getBids()));
 
                         }
                     }
-                }catch (Codec.CodecException e){
+                } catch (Codec.CodecException e) {
                     e.printStackTrace();
                 } catch (UngroundedException e) {
                     e.printStackTrace();
                 } catch (OntologyException e) {
                     e.printStackTrace();
                 }
-            }else if(msg.getPerformative() == ACLMessage.ACCEPT_PROPOSAL){
+            } else if (msg.getPerformative() == ACLMessage.ACCEPT_PROPOSAL) {
                 //收到房源的回应
                 currentResponse++;
                 try {
                     ContentElement ce = myAgent.getContentManager().extractContent(msg);
                     Action act = (Action) ce;
-                    if(act.getAction() instanceof  Negotiation){
-                        Negotiation negotiation = (Negotiation)act.getAction();
-                        if(negotiation.getResult() == 1){       //diminish the price        //and these bids will be calculate scores
-                            System.out.println("房源"+msg.getSender().getName()+"接收降价");
-                            System.out.println("降低到"+negotiation.getActualPrice());
-                            lowerPriceNum ++ ;
+                    if (act.getAction() instanceof Negotiation) {
+                        Negotiation negotiation = (Negotiation) act.getAction();
+                        if (negotiation.getResult() == 1) {       //diminish the price        //and these bids will be calculate scores
+                            System.out.println("房源" + msg.getSender().getName() + "接收降价");
+                            System.out.println("降低到" + negotiation.getActualPrice());
+                            lowerPriceNum++;
                             Bid tempbid = mapped.get(msg.getSender());
                             tempbid.setPrice(negotiation.getActualPrice());
-//                            bids.add(mapped.get(msg.getSender()));
+                            mapped.put(msg.getSender(), tempbid);        //覆盖negotiation后的bid
+
+                            this.setConsult(tempbid, negotiation.getActualPrice(), true);
                             bids.add(tempbid);
-                        }else if(negotiation.getResult() == 0){        //don't diminish the price
+                        } else if (negotiation.getResult() == 0) {        //don't diminish the price
                             // stop calculating the score and if it is good ,the GoodBid had one in the last process of calculate scores
-                            System.out.println("房源"+msg.getSender().getName()+"拒绝降价");
+                            System.out.println("房源" + msg.getSender().getName() + "拒绝降价");
                             Bid tempbid = mapped.get(msg.getSender());
+
+                            this.setConsult(tempbid, 0, false);
                             finalBids.add(tempbid);
-                        }else {
+                        } else {
                             // stop calculating the score and if it is good ,the GoodBid had one in the last process of calculate scores
                             System.out.println("房源" + msg.getSender().getName() + "未响应降价");
                             Bid tempbid = mapped.get(msg.getSender());
+
+                            this.setConsult(tempbid, 0, false);
                             finalBids.add(tempbid);
                         }   //对于后两者不再进行讨价还价
                     }
 
-                    if(currentResponse == responseNum){
+                    if (currentResponse == responseNum) {
                         //收到全部的回复
-                        if(lowerPriceNum == 0){
+                        if (lowerPriceNum == 0) {
                             //所有房源都不降价
                             System.out.println("所有房源都不降价了");
                             //返回现在的最好的房源
-                            java.util.List<Bid> resultBids = new java.util.ArrayList<Bid>();
-                            for(int i=0;i<cal.getGoodBid().size();i++){
-                                Bid temp = (Bid)cal.getGoodBid().get(i);
-                                resultBids.add(temp);
-                            }
+                            java.util.List<BidInfo> resultBids = this.creatBidInfo(cal.getGoodBid());
+
                             agent.putResult(resultBids);
-                            agent.doDelete();
-                        }else{
+                            negotiation neg = new negotiation(myAgent,allbids,"",true);
+                            myAgent.addBehaviour(neg);
+
+                        } else {
                             System.out.print("再次协商！！");
                             lowerPriceNum = 0;
                             currentResponse = 0;
-                            tenant t =  agent.getOwner();
+                            tenant t = agent.getOwner();
                             Order order = agent.getOrder(t.getId());
-                            List results = cal.ScreenBids(bids,t,order,true);
-                            if(results == null){
-                                java.util.List<Bid> resultBids = (java.util.List<Bid>) cal.getGoodBid();
+                            List results = cal.ScreenBids(bids, t, order, true, myAgent);
+                            if (results == null) {
+                                java.util.List<BidInfo> resultBids = this.creatBidInfo(cal.getGoodBid());
+
                                 agent.putResult(resultBids);
-                                agent.doDelete();         //clear the agent
-                            }else{
+                                negotiation neg = new negotiation(myAgent,allbids,order.getId(),true);
+                                myAgent.addBehaviour(neg);
+//                                agent.doDelete();         //clear the agent
+                            } else {
                                 responseNum = results.size();
-                                myAgent.addBehaviour(new negotiation(myAgent,results,order.getId()));
+                                myAgent.addBehaviour(new negotiation(myAgent, results, order.getId(),false));
                                 bids.clear();
                             }
-
                         }
                     }
 
@@ -171,17 +183,50 @@ public class tenantListener extends CyclicBehaviour {
                 } catch (OntologyException e) {
                     e.printStackTrace();
                 }
-            }else{
+            } else {
                 //用来测试的
                 String content = msg.getContent();
-                System.out.println("房客Agent："+content);
+                System.out.println("房客Agent：" + content);
             }
             /*
               可以扩展监听其它类型的Message
              */
-        }else{
+        } else {
             block();
         }
+    }
+
+    private void setConsult(Bid bid, int actual, boolean pass) {
+        int landlordid = bid.getRoom().getLandlordId();
+        java.util.List<Consult> consults = ((tenantAgent) myAgent).getConsult(landlordid);
+        Consult oneConsult = consults.get(consults.size() - 1);
+        Consult result;
+        if (pass) {   //pass the negotiation
+            result = new Consult(oneConsult.getTenantName(), oneConsult.getLandlordName(), oneConsult.getMinReduction(), oneConsult.getMaxReduction(), 1, oneConsult.getBidLevel(), actual);
+        } else {  //reject the reduction
+            result = new Consult(oneConsult.getTenantName(), oneConsult.getLandlordName(), oneConsult.getMinReduction(), oneConsult.getMaxReduction(), 2, oneConsult.getBidLevel(), oneConsult.getActualPrice());
+        }
+        consults.add(result);
+        ((tenantAgent) myAgent).setConsult(landlordid,consults);
+    }
+
+    public java.util.List<BidInfo> creatBidInfo(List GoodBid) {
+
+        java.util.List<BidInfo> resultBidInfo = new java.util.ArrayList<BidInfo>();
+        for (int i = 0; i < cal.getGoodBid().size(); i++) {
+            Bid bid = (Bid) cal.getGoodBid().get(i);
+            Room r = bid.getRoom();
+            landlord l =  landlordDao.findlandlordByid(r.getLandlordId());
+            java.util.List<String> facilitys = new java.util.ArrayList<String>();
+            for(int j = 0 ; j <bid.getFacilities().size() ; j++){
+                facilitys.add((String)bid.getFacilities().get(i));
+            }
+            BidInfo info = new BidInfo(l.getLandlordname(),l.getLandlordtype(),r.getType(),bid.getPrice()+"",r.getPrice()+"",bid.getNum(),facilitys,((tenantAgent) myAgent).getConsult(l.getLandlordid()));
+            resultBidInfo.add(info);
+
+        }
+
+        return resultBidInfo;
     }
 
 }

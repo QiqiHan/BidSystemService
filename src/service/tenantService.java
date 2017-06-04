@@ -18,6 +18,6 @@ public interface tenantService {
     public tenant findTenant(int tenantId);
     public void createAgent(int tenantId);
     public void closeAgent(int tenantId);
-    public List<BidInfo> Order(String name, OrderInfo o);
+    public List<BidInfo> Order(OrderInfo o);
 
 }
