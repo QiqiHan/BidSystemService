@@ -76,7 +76,7 @@ public class selectAnalysis extends OneShotBehaviour {
 //        //应该是如果应标 再查周边信息
 //        while(landlordCompares.hasNext()) {
 //            landlordCompare landcompare = landlordCompares.next();
-//            landlord land = landcompare.getLand();
+//            LandlordInfo land = landcompare.getLand();
 //            //寻找酒店周边信息
 //            List<String> keywords = new ArrayList<String>();
 //            keywords.add("超市");

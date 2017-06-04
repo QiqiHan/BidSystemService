@@ -29,6 +29,7 @@ public class LoginApi {
         String type = user.getType();
         LoginService loginService = LoginServiceImpl.getInstance();
         UserInfo userInfo = loginService.login(name,password,type);
+        System.out.println(userInfo.getId());
         return JSONObject.toJSONString(userInfo);
     }
 }

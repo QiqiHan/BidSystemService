@@ -34,7 +34,7 @@ public class landlordAgent extends Agent{
         setEnabledO2ACommunication(true,10);
         //args[0]是landlord  args[1]是countDownBatch
         Object[] args = getArguments();
-        DFUtil.registerService(this,"landlord");
+        DFUtil.registerService(this,"LandlordInfo");
         addBehaviour(new landlordListener(this));
         if (args.length > 0) {
             owner = (landlord) args[0];

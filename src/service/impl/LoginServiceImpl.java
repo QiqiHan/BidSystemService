@@ -3,7 +3,7 @@ package service.impl;
 import DO.landlord;
 import DO.tenant;
 import DO.user;
-import VO.LandLordInfo;
+import VO.LandlordInfo;
 import VO.TenantInfo;
 import VO.UserInfo;
 import dao.daoImpl.UserDao;
@@ -24,12 +24,35 @@ public class LoginServiceImpl implements LoginService{
         return login;
     }
 
-    public UserInfo login(String id, String pwd, String type) {
-        user u = UserDao.findUser(id,pwd,type);
+    public UserInfo login(String name, String pwd, String type) {
+        user u = UserDao.findUser(name,pwd,type);
+        System.out.println(u.getName());
         if(u instanceof landlord){
-            return new LandLordInfo();
+            return new LandlordInfo(((landlord) u).getLandlordid(),
+                    ((landlord) u).getLandlordname(),
+                    u.getPassword(),
+                    ((landlord) u).getLandlordtype(),
+                    ((landlord) u).getFeature(),
+                    ((landlord) u).getStartprice(),
+                    ((landlord) u).getCity(),
+                    ((landlord) u).getArea(),
+                    ((landlord) u).getDetailaddress(),
+                    ((landlord) u).getComment(),
+                    ((landlord) u).getLongitude(),
+                    ((landlord) u).getLatitude(),
+                    ((landlord) u).getConcat(),
+                    ((landlord) u).getIntroduction(),
+                    ((landlord) u).getCharacteristic());
         }else if(u instanceof tenant){
-            return new TenantInfo();
+            return new TenantInfo(u.getId(),
+                    u.getName(),
+                    u.getPassword(),
+                    ((tenant) u).getGender(),
+                    ((tenant) u).getPhonenum(),
+                    ((tenant) u).getPreference(),
+                    ((tenant) u).getEducation(),
+                    ((tenant) u).getVocation(),
+                    ((tenant) u).getEconomic());
         }else{
             return null;
         }

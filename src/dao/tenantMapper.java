@@ -1,6 +1,7 @@
 package dao;
 
 import DO.tenant;
+import org.apache.ibatis.annotations.Param;
 
 public interface tenantMapper {
     int deleteByPrimaryKey(Integer id);
@@ -11,7 +12,7 @@ public interface tenantMapper {
 
     tenant selectByPrimaryKey(Integer id);
 
-    tenant selectByNameAndPassword(String tenantname, String password);
+    tenant selectByNameAndPassword(@Param("tenantname") String tenantname, @Param("password") String password);
 
     int updateByPrimaryKeySelective(tenant record);
 

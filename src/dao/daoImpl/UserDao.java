@@ -14,13 +14,12 @@ import util.DBTools;
  */
 public class UserDao {
     public static user findUser(String name, String password, String type){
-        if(type.equals("landlord")){
-            SqlSession sqlSession = DBTools.getSession();
+        SqlSession sqlSession = DBTools.getSession();
+        if(type.equals("LandlordInfo")){
             landlordMapper landlordMapper = sqlSession.getMapper(dao.landlordMapper.class);
             landlord landlord = landlordMapper.selectByNameAndPassword(name,password);
             return landlord;
         }else if(type.equals("tenant")){
-            SqlSession sqlSession = DBTools.getSession();
             tenantMapper tenantMapper = sqlSession.getMapper(dao.tenantMapper.class);
             tenant tenant =  tenantMapper.selectByNameAndPassword(name,password);
             return tenant;

@@ -9,7 +9,7 @@
         <dataSource type="POOLED">
             <property name="driver" value="com.mysql.jdbc.Driver"/>
             <property name="url" value="jdbc:mysql://127.0.0.1:3306/bidsystem" />
-            <property name="name" value="root"/>
+            <property name="username" value="root"/>
             <property name="password" value="admin"/>
         </dataSource>
     </environment>

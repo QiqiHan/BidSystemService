@@ -48,7 +48,7 @@ public class landlordListener extends CyclicBehaviour {
                     Action act = (Action) ce;
                     Tender tender = (Tender) act.getAction();
                     Order order = tender.getOrder();
-                    System.out.println("landlord" + myAgent.getName() + "收到信息地址" + order.getAddress() + " 价格:" + order.getMinPrice()+"—"+order.getMaxPrice());
+                    System.out.println("LandlordInfo" + myAgent.getName() + "收到信息地址" + order.getAddress() + " 价格:" + order.getMinPrice()+"—"+order.getMaxPrice());
                     myAgent.addBehaviour(new landlordDealTender(myAgent,tender,msg.getSender()));
                 } catch (Codec.CodecException e) {
                     e.printStackTrace();
