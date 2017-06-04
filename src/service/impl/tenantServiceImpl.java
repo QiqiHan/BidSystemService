@@ -84,6 +84,11 @@ public class tenantServiceImpl implements tenantService {
     public List<BidInfo> Order(String name, OrderInfo o) {
         OrderInfo orderInfo = o;
         tenant user = tenantDao.getTenant(orderInfo.getUserId());
+        jade.util.leap.List facilities = new  jade.util.leap.ArrayList();
+        List<String> facilitys = o.getFacilities();
+        for(int i = 0 ; i < facilitys.size() ; i++){
+            facilities.add(i,facilitys.get(i));
+        }
         Order order = new Order(o.getUserId()+"",
                 user.getName(),
                 orderInfo.getAddress(),
@@ -95,7 +100,7 @@ public class tenantServiceImpl implements tenantService {
                 new Date(),
                 orderInfo.getMinPrice(),
                 orderInfo.getMaxPrice(),
-                orderInfo.getFacilities(),
+                facilities,
                 new AID(user.getName(),false));
         AgentController tenantAgent = agentHandler.agents.get(name);
         List<Bid> bids = new ArrayList<Bid>();
