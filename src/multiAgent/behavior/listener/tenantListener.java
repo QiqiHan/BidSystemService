@@ -219,7 +219,7 @@ public class tenantListener extends CyclicBehaviour {
             landlord l =  landlordDao.findlandlordByid(r.getLandlordId());
             java.util.List<String> facilitys = new java.util.ArrayList<String>();
             for(int j = 0 ; j <bid.getFacilities().size() ; j++){
-                facilitys.add((String)bid.getFacilities().get(i));
+                facilitys.add((String)bid.getFacilities().get(j));
             }
             BidInfo info = new BidInfo(l.getLandlordname(),l.getLandlordtype(),r.getType(),bid.getPrice()+"",r.getPrice()+"",bid.getNum(),facilitys,((tenantAgent) myAgent).getConsult(l.getLandlordid()));
             resultBidInfo.add(info);

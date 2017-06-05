@@ -181,11 +181,11 @@ public class ValueCal {
             maxReduction = 10;
         }
         if(economy.equals("poor")){
-            minReduction = maxReduction/3;
+            minReduction = maxReduction/3+1;
         }else if(economy.equals("normal")){
-            minReduction = maxReduction/5;
+            minReduction = maxReduction/5+1;
         }else if(economy.equals("rich")){
-            minReduction = 0;
+            minReduction = 1;
         }
         System.out.println("最大降价幅度："+maxReduction+" 最小降价幅度:"+minReduction);
 
@@ -212,11 +212,11 @@ public class ValueCal {
             maxReduction = 10;
         }
         if(economy.equals("poor")){
-            minReduction = maxReduction/3;
+            minReduction = maxReduction/3+1;
         }else if(economy.equals("normal")){
-            minReduction = maxReduction/5;
+            minReduction = maxReduction/5+1;
         }else if(economy.equals("rich")){
-            minReduction = 0;
+            minReduction = 1;
         }
         System.out.println("最大降价幅度："+maxReduction+"  最小降价幅度:"+minReduction);
 

@@ -69,7 +69,7 @@ public class negotiation  extends OneShotBehaviour {
                 //组装Negotitation对象，这边其实需要计算大概还价多少
                 Negotiation negotiation;
                 if(End){
-                    negotiation = new Negotiation(Orderid,minReduction, maxReduction, 2,bid.getPrice());
+                    negotiation = new Negotiation(Orderid,0, 0, 2,bid.getPrice());
                 }else{
                     negotiation = new Negotiation(Orderid,minReduction, maxReduction, -1,bid.getPrice());
                 }
