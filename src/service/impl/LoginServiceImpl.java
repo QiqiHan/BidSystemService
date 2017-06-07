@@ -26,7 +26,6 @@ public class LoginServiceImpl implements LoginService{
 
     public UserInfo login(String name, String pwd, String type) {
         user u = UserDao.findUser(name,pwd,type);
-        System.out.println(u.getName());
         if(u instanceof landlord){
             return new LandlordInfo(((landlord) u).getLandlordid(),
                     ((landlord) u).getLandlordname(),

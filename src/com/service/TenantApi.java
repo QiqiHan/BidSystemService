@@ -2,7 +2,6 @@ package com.service;
 
 import VO.BidInfo;
 import VO.OrderInfo;
-import VO.User;
 import com.alibaba.fastjson.JSONObject;
 import service.impl.tenantServiceImpl;
 import service.tenantService;
@@ -27,6 +26,7 @@ public class TenantApi {
     public String order(String json){
         OrderInfo  order = JSONObject.parseObject(json, OrderInfo.class);
         tenantService tenantService = tenantServiceImpl.getInstance();
+        Date oTime = new Date(2017,4,28);
         Date dStart = new Date(2017,5,28);
         Date dEnd = new Date(2017,5,29);
         List<String> facility = new ArrayList<String>();
@@ -40,7 +40,7 @@ public class TenantApi {
                 100,
                 900,
                 facility,
-                dStart,
+                oTime, dStart,
                 dEnd);
         tenantService.createAgent(order.getUserId());
         //目前bid还没返回

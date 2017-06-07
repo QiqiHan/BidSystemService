@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * Created by H77 on 2017/5/28.
+ *
  */
 public class OrderInfo {
 
@@ -18,10 +19,11 @@ public class OrderInfo {
     private int minPrice;
     private int maxPrice;
     private List<String> facilities;
+    private Date orderTime;
     private Date startTime;
     private Date endTime;
 
-    public OrderInfo(int userId, String address, String hotelType, String roomType, int roomNum, int minPrice, int maxPrice, List<String> facilities ,Date start,Date end) {
+    public OrderInfo(int userId, String address, String hotelType, String roomType, int roomNum, int minPrice, int maxPrice, List<String> facilities, Date orderTime, Date start, Date end) {
         this.userId = userId;
         this.address = address;
         this.hotelType = hotelType;
@@ -30,6 +32,7 @@ public class OrderInfo {
         this.minPrice = minPrice;
         this.maxPrice = maxPrice;
         this.facilities = facilities;
+        this.orderTime = orderTime;
         this.startTime = start;
         this.endTime = end;
     }
@@ -117,4 +120,11 @@ public class OrderInfo {
     }
 
 
+    public Date getOrderTime() {
+        return orderTime;
+    }
+
+    public void setOrderTime(Date orderTime) {
+        this.orderTime = orderTime;
+    }
 }
