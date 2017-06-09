@@ -43,6 +43,8 @@ public class ValueCal {
     private List reject = new ArrayList();
     private List GoodBid = new ArrayList();
 
+    private List GoodScore = new ArrayList();
+
     private static int init_maxPrice = 0;
     private static int init_minPrice = 0;
     private static int init_avePrice = 0;
@@ -92,6 +94,7 @@ public class ValueCal {
                 }else if(sum>=goodLevel){
                     goodBidScore+=sum;
                     GoodBid.add(tempbid);
+                    GoodScore.add(sum);
                 }else{
                     resultBids.add(tempbid);
                 }
@@ -117,6 +120,7 @@ public class ValueCal {
                 }else if(sum>=goodLevel){
                     goodBidScore+=sum;
                     GoodBid.add(tempbid);
+                    GoodScore.add(sum);
                 }else{
                     resultBids.add(tempbid);
                 }
@@ -163,6 +167,13 @@ public class ValueCal {
         return GoodBid;
     }
 
+    public List getGoodScore() {
+        return GoodScore;
+    }
+
+    public void setGoodScore(List goodScore) {
+        GoodScore = goodScore;
+    }
 
     //fill the hashmap
     private void fill_hashmap(){

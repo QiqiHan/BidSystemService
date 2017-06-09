@@ -151,7 +151,6 @@ public class tenantListener extends CyclicBehaviour {
                             System.out.println("所有房源都不降价了");
                             //返回现在的最好的房源
                             java.util.List<BidInfo> resultBids = this.creatBidInfo(cal.getGoodBid());
-
                             agent.putResult(resultBids);
                             negotiation neg = new negotiation(myAgent,allbids,"",true);
                             myAgent.addBehaviour(neg);
@@ -211,7 +210,6 @@ public class tenantListener extends CyclicBehaviour {
     }
 
     public java.util.List<BidInfo> creatBidInfo(List GoodBid) {
-
         java.util.List<BidInfo> resultBidInfo = new java.util.ArrayList<BidInfo>();
         for (int i = 0; i < cal.getGoodBid().size(); i++) {
             Bid bid = (Bid) cal.getGoodBid().get(i);
@@ -222,10 +220,10 @@ public class tenantListener extends CyclicBehaviour {
                 facilitys.add((String)bid.getFacilities().get(j));
             }
             BidInfo info = new BidInfo(l.getLandlordname(),l.getLandlordtype(),r.getType(),bid.getPrice()+"",r.getPrice()+"",bid.getNum(),facilitys,((tenantAgent) myAgent).getConsult(l.getLandlordid()));
+            info.setScore((Integer)cal.getGoodScore().get(i));
+            info.setLocation(l.getDetailaddress());
             resultBidInfo.add(info);
-
         }
-
         return resultBidInfo;
     }
 

@@ -15,6 +15,8 @@ public class BidInfo {
     int num;
     List<String> facilitys;
     List<Consult> consults;
+    String location;
+    int score;
 
     public BidInfo(String hotelName, String hotelType, String roomType, String actualPrice, String roomPrice, int num, List<String> facilitys, List<Consult> consult) {
         this.hotelName = hotelName;
@@ -92,6 +94,21 @@ public class BidInfo {
         this.consults = consults;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
     @Override
     public String toString() {
         return "BidInfo{" +
@@ -103,6 +120,9 @@ public class BidInfo {
                 ", num=" + num +
                 ", facilitys=" + facilitys +
                 ", consults=" + consults +
+                ", location='" + location + '\'' +
+                ", score=" + score +
                 '}';
     }
+
 }
