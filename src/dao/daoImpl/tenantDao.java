@@ -34,4 +34,10 @@ public class tenantDao {
         tenant user = mapper.selectByPrimaryKey(tenantId);
         return user;
     }
+    public static boolean registerTenant(tenant tenant){
+        SqlSession sqlSession = DBTools.getSession();
+        tenantMapper mapper = sqlSession.getMapper(dao.tenantMapper.class);
+        mapper.insert(tenant);
+        return true;
+    }
 }
