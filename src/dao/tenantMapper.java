@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 public interface tenantMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(tenant record);
+    int insertTenant(tenant record);
 
     int insertSelective(tenant record);
 

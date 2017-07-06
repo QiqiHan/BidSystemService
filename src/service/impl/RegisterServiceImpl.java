@@ -1,8 +1,11 @@
 package service.impl;
 
+import DO.landlord;
 import DO.tenant;
+import VO.LandlordInfo;
 import VO.TenantInfo;
 import VO.UserInfo;
+import dao.daoImpl.landlordDao;
 import dao.daoImpl.tenantDao;
 import service.RegisterService;
 
@@ -20,20 +23,43 @@ public class RegisterServiceImpl implements RegisterService {
         return registerService;
     }
 
-    public String register(UserInfo userInfo) {
+    public String register(UserInfo userInfo,String type) {
+        if(type.equals("tenant")){
+            tenant tenant = new tenant(((TenantInfo)userInfo).getId(),
+                    ((TenantInfo)userInfo).getName(),
+                    ((TenantInfo)userInfo).getPassword(),
+                    ((TenantInfo)userInfo).getGender(),
+                    ((TenantInfo)userInfo).getPhonenum(),
+                    ((TenantInfo)userInfo).getPreference(),
+                    ((TenantInfo)userInfo).getEducation(),
+                    ((TenantInfo)userInfo).getVocation(),
+                    ((TenantInfo)userInfo).getEconomic());
+            if(tenantDao.registerTenant(tenant)){
+                return "Register Success!";
+            }
+        }else if(type.equals("landlord")){
+            landlord landlord = new landlord(((LandlordInfo)userInfo).getLandlordid(),
+                    ((LandlordInfo)userInfo).getLandlordname(),
+                    ((LandlordInfo)userInfo).getPassword(),
+                    ((LandlordInfo)userInfo).getLandlordtype(),
+                    ((LandlordInfo)userInfo).getFeature(),
+                    ((LandlordInfo)userInfo).getStartprice(),
+                    ((LandlordInfo)userInfo).getCity(),
+                    ((LandlordInfo)userInfo).getArea(),
+                    ((LandlordInfo)userInfo).getDetailaddress(),
+                    ((LandlordInfo)userInfo).getComment(),
+                    ((LandlordInfo)userInfo).getLongitude(),
+                    ((LandlordInfo)userInfo).getLatitude(),
+                    ((LandlordInfo)userInfo).getConcat(),
+                    ((LandlordInfo)userInfo).getIntroduction(),
+                    ((LandlordInfo)userInfo).getCharacteristic());
+            if(landlordDao.registerLandlord(landlord)){
+                return "Register Success!";
+            }
+        }else{
 
-        tenant tenant = new tenant(((TenantInfo)userInfo).getId(),
-                ((TenantInfo)userInfo).getName(),
-                ((TenantInfo)userInfo).getPassword(),
-                ((TenantInfo)userInfo).getGender(),
-                ((TenantInfo)userInfo).getPhonenum(),
-                ((TenantInfo)userInfo).getPreference(),
-                ((TenantInfo)userInfo).getEducation(),
-                ((TenantInfo)userInfo).getVocation(),
-                ((TenantInfo)userInfo).getEconomic());
-        if(tenantDao.registerTenant(tenant)){
-            return "Register Success!";
         }
+
         return "Register Fail!";
     }
 }

@@ -1,7 +1,10 @@
 package com.service;
 
+import VO.LandlordInfo;
 import VO.TenantInfo;
 import com.alibaba.fastjson.JSONObject;
+import service.RegisterService;
+import service.impl.RegisterServiceImpl;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -21,8 +24,8 @@ public class RegisterAPI {
     @Produces({MediaType.APPLICATION_JSON})
     public String tenantRegister(String json){
         TenantInfo tenantInfo = JSONObject.parseObject(json,TenantInfo.class);
-
-        return null;
+        RegisterService registerService = RegisterServiceImpl.getInstance();
+        return registerService.register(tenantInfo,"tenant");
     }
 
     @Path("/landlord")
@@ -30,6 +33,8 @@ public class RegisterAPI {
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public String landlordRegister(String json){
-        return null;
+        LandlordInfo landlordInfo = JSONObject.parseObject(json,LandlordInfo.class);
+        RegisterService registerService = RegisterServiceImpl.getInstance();
+        return registerService.register(landlordInfo,"landlord");
     }
 }

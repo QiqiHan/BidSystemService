@@ -18,5 +18,11 @@ public class landlordDao {
         landlord land = mapper.selectByPrimaryKey(landlordid);
         return land;
     }
+    public static boolean registerLandlord(landlord landlord){
+        SqlSession sqlSession = DBTools.getSession();
+        landlordMapper mapper = sqlSession.getMapper(landlordMapper.class);
+        mapper.insert(landlord);
+        return true;
+    }
 
 }

@@ -5,6 +5,7 @@ import DO.room;
 
 /**
  * Created by sam on 2017/5/16.
+ *
  */
 public interface landlordService {
     public boolean createLandlord(landlord lord);

@@ -7,5 +7,5 @@ import VO.UserInfo;
  *
  */
 public interface RegisterService {
-    public String register(UserInfo userInfo);
+    public String register(UserInfo userInfo,String type);
 }

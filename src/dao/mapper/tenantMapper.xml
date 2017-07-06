@@ -34,9 +34,9 @@
     delete from tenant
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="DO.tenant" >
+  <insert id="insertTenant" parameterType="DO.tenant" >
     insert into tenant (id, name, password, 
-      gender, phoneNum, preference, 
+      gender, phonenum, preference,
       education, vocation, economic
       )
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 

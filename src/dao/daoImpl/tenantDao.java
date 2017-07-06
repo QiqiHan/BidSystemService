@@ -37,7 +37,7 @@ public class tenantDao {
     public static boolean registerTenant(tenant tenant){
         SqlSession sqlSession = DBTools.getSession();
         tenantMapper mapper = sqlSession.getMapper(dao.tenantMapper.class);
-        mapper.insert(tenant);
+        mapper.insertTenant(tenant);
         return true;
     }
 }

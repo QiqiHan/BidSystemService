@@ -35,7 +35,7 @@ public class tenantServiceImpl implements tenantService {
     public boolean createTenant(tenant user) {
         SqlSession sqlSession = DBTools.getSession();
         tenantMapper mapper = sqlSession.getMapper(dao.tenantMapper.class);
-        mapper.insert(user);
+        mapper.insertTenant(user);
         sqlSession.commit();
         return true;
     }
